@@ -1,0 +1,397 @@
+{
+  "name": "My workflow 5",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -20,
+        -240
+      ],
+      "id": "616e3b32-6e86-4cc5-882a-fbdcaa24e103",
+      "name": "When chat message received",
+      "webhookId": "e02b398b-dee6-4d8c-bdc7-f513e358ee26"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=use the tool to define the profile of the user with the Id {{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=You are a User Profiling Agent. \n\nYour task is use the tool to analyze JSON data of the user with the ID {{ $json.chatInput }} representing a user's spending habits across different types of brands and generate a comprehensive user profile \n\nThis profile will be used by a downstream agent.\n\n**Input Data:**\nUser ID: The user ID associated with this data is {{ $json.chatInput }}.\n\n*Profiling Task:\n\nAnalyze Spending Patterns: Examine the average_amount, min_amount, max_amount, and standard_deviation for each type. \n\n*Identify:\n- Which brand types the user spends the most on (highest average_amount).\n- Which brand types the user spends the least on (lowest average_amount).\n- How consistent the user's spending is within each type (consider standard_deviation - lower values indicate more consistent spending).\n- The range of spending for each brand type (consider min_amount and max_amount).\n\n*Interpret Brand Type Preferences: Based on the spending patterns and number_of_visits, infer the user's preferences for different brand types.\nHigh average_amount and high number_of_visits suggest a strong preference.\nLow average_amount or low number_of_visits suggest a weaker preference.\n\n*Recommend Cuisine Types: Based on your interpretation of the user's brand type preferences, recommend specific cuisine types that the user might enjoy. Crucially, you must only recommend cuisine types from the following list:\n\n[Healthy, Vegetarian, Vegan, Halal, Pescatarian, Kosher, Farm To Table, Organic, American Fare, Chinese, Tapas, Indian, Italian, Japanese, Latin American, New American, Cocktail Bar, Spanish, Vietnamese, Thai, Mediterranean, Fusion, Taiwanese, Wine Bar, Mexican, French, Butcher, Omakase, Steakhouse, Southern, Newly Added, Oysters, Cafe, Coffee Shop, Bakery, Arab, Comfort Food, GastroPub, Argentinian, Balkan, Barbecue, Asian Fusion, Tacos, Fried Chicken, Creole, Caribbean, Australian, Haitian, Donuts, Market, Korean, Israeli, Crepes, Juice Bar, Peruvian, Jamaican, Agave Bar, Ramen, Pizza, Sushi, Seafood, Salads, Pasta, Sandwiches, Michelin Starred, James Beard Nominated, James Beard Winner, Bib Gourmand, Fine Dining, Highly Rated, Brunch, Casual, Business Dining, Date Night, Standout Wine List, Outdoor Seating, Late Night, DJ, Club, Bar, Group Dining, Lounge, Bottle Service, Live Shows, Music, Tasting Menu, Family Friendly, Pet Friendly, Dancing, Woman-Operated, Black-Operated, LGBTQ Owned, Rooftop, Quick Bites, Sports, Locally Owned, BIPOC Owned, Asian Owned, Gluten-Free, Smoothies, Food Hall, British, Brewery, Champagne Bar, Caviar, Vegan Friendly, Vegetarian Friendly, Winery, Small Bites, LGBTQ+ Friendly, European, Deli, Nightclub, Bagels, Cocktails, Cuban, Asian, Southeast Asian, Tiki Bar, Kebab, Fast Casual, Coffee, Events, Burgers, Whiskey Selection, Street Food, Food Truck, Takeout, Ice Cream, Puerto Rican, Soups, TexMex, Indonesian, Filipino, Plant-Based, Greek, Portuguese, Wine, Speakeasy, Charcuterie, Moroccan, Cheese Shop, Pastries, Bowls, Beer, Lebanese, Oaxacan, Axe Throwing, SF Restaurant Week, DC Restaurant Week, NYC Restaurant Week, CHI Restaurant Week, Cajun, Sports Bar, Restaurant Week Participant, Seattle Restaurant Week, Breakfast, Earth Day, Father's Day, Wings, Fries, Nicaraguan, Mussels, Ecuadorian, Chef Collective, New Mexican, Southwestern, Margaritas, LA Restaurant Week, Miami Spice, Ethiopian, Cookies, Dessert, Gelato, Michelin Recommended, Middle Eastern, Hawaiian, Poke, African, Dumplings, Pub, Irish Pub, Miami Spice, Dallas Restaurant Week, South American, Turkish, Calzones, Distillery, Boba Tea, Tea House, Wood Fire Kitchen, Catering, Austin Restaurant Week, Quesadillas, Burritos, Curry, Queso, Dog Friendly, Burmese, Fondue, Persian, Russian, A la carte, Massage Parlor, Noodles, Malaysian, Waffles, Champagne, Arepas, Colombian, 2025 James Beard Nominated]\n\n* Develop a User Profile: Create a concise and insightful user profile based on your analysis. The profile should describe:\n\n - Recomended Cuisine type: A list of recomended cuisine types from the list provided above, ordered by how strong the recommendation is.\n - The Rationnal: Explain why you made each recommendation, referencing the spending data (average amount spent, number of visits, etc.).\n\n\nOutput Format:\n\nYour output MUST be a Markdown JSON formatted response conforming to the structure below. Do not include any text outside of the Markdown JSON object. The output will be directly consumed by another n8n node\n\n{\n\"user_id\": \"{{ $json.chatInput }}\",\n\"recomended_cuisine_type\": \"[Pick the best 2]\",\n\"rationale\": \"[Explanation for Recommendation]\",\n\"potential_average_spending\": \"[Estimated average spending based on analysis]\"\n}\n\n\n\n\n*Important Considerations:\n\n*Accuracy: Ensure your analysis is directly supported by the data.\n*Clarity: Use clear and concise language.\n*Creativity: While adhering to the format, provide as much relevant insight as possible.\n*Purpose: This profile will be used to generate personalized recommendations.\n*Conciseness: Be concise in your analysis, make it clear and simple.\n*Context: Explain clearly why you chose this notation for your analysis.\n*Strict Output Format: Follow the specified output format exactly. Do not add any extra text or explanations outside of this format. The output must be easily parsed by a downstream agent."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        200,
+        -240
+      ],
+      "id": "a7ae6022-4d1c-43f9-976f-c7d7babc4f4b",
+      "name": "AI Agent",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  OBJECT_CONSTRUCT(\n    'summary',\n    ARRAY_AGG(\n      OBJECT_CONSTRUCT(\n        'Cuisine type',\n        bt.\"TYPE\",\n        'minium amount spent',\n        \"MIN AMOUNT\",\n        'maximum amount spent',\n        \"MAX AMOUNT\",\n        'standard deviation',\n        \"STANDARD DEVIATION\"::INTEGER,\n        'average amount spent',\n        \"AVERAGE AMOUNT\",\n        'Number of times the user went to this Cuisine type',\n        \"NUMBER OF TIMES USER WENT TO BRAND TYPE\"\n      )\n    )\n  ) AS json_output\nFROM\n  (\n    SELECT\n      bt.NAME AS \"TYPE\",\n      ROUND(MIN(ct.AMOUNT)) AS \"MIN AMOUNT\",\n      ROUND(MAX(ct.AMOUNT)) AS \"MAX AMOUNT\",\n      ROUND(STDDEV(ct.AMOUNT)) AS \"STANDARD DEVIATION\",\n      ROUND(AVG(ct.AMOUNT)) AS \"AVERAGE AMOUNT\",\n      COUNT(*) AS \"NUMBER OF TIMES USER WENT TO BRAND TYPE\"\n    FROM\n      IK_PRODUCTION.CREDIT_TRANSACTIONS ct\n      JOIN IK_PRODUCTION.PROJECT_LOCATIONS pl ON ct.PROJECT_LOCATION_ID = pl.ID\n      JOIN IK_PRODUCTION.PROJECTS p ON pl.PROJECT_ID = p.ID\n      JOIN IK_PRODUCTION.BRANDS b ON p.BRAND_ID = b.ID\n      JOIN IK_PRODUCTION.BRAND_TAGS bt ON b.VENUE_STYLE = bt.ID\n    WHERE\n      ct.USER_ID = {{ $json.query }}\n    GROUP BY\n      bt.NAME\n    ORDER BY TYPE ASC\n  ) bt;"
+      },
+      "type": "n8n-nodes-base.snowflake",
+      "typeVersion": 1,
+      "position": [
+        500,
+        160
+      ],
+      "id": "1f4c7372-a032-4ccc-850e-cf76925f8ae4",
+      "name": "Snowflake",
+      "alwaysOutputData": true,
+      "credentials": {
+        "snowflake": {
+          "id": "0869j4Pe528cuhbe",
+          "name": "Snowflake account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "User_PROFILE",
+        "description": "call this tool to get the informations you need about the user ",
+        "workflowId": {
+          "__rl": true,
+          "value": "cY3o65S2fLIhvSHa",
+          "mode": "list",
+          "cachedResultName": "My workflow 5"
+        },
+        "fields": {
+          "values": [
+            {}
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        -20
+      ],
+      "id": "c5d72065-f42a-415f-a2e8-46b0de248be4",
+      "name": "User_PROFILE_Tool",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        300,
+        160
+      ],
+      "id": "a8cd167a-235f-4a81-9f79-915416a18dca",
+      "name": "User_PROFILE"
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5-coder:7b-instruct",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        180,
+        -20
+      ],
+      "id": "9eba38bc-b637-49e4-af78-837bf54784ee",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "uArGgrGUknxDJbSn",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "72bbc3ad-8211-40f2-bf66-d65051c2547b",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        -240
+      ],
+      "id": "7a1b7b9c-973e-44a0-8219-18d8389a43a2",
+      "name": "Parse Output",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b4ed3490-75fb-486b-aba2-e0fc0dbc6518",
+              "name": "user_id",
+              "value": "={{ $json.output.user_id }}",
+              "type": "string"
+            },
+            {
+              "id": "ce420b8b-bb67-4876-9eb3-2245272b725b",
+              "name": "recomended_cuisine_type",
+              "value": "={{ $json.output.recomended_cuisine_type }}",
+              "type": "array"
+            },
+            {
+              "id": "aa147f58-a022-4ec9-86fd-05ad87f38efe",
+              "name": "rationale",
+              "value": "={{ $json.output.rationale }}",
+              "type": "string"
+            },
+            {
+              "id": "880238a6-4c45-4a79-9e29-b4332c054a20",
+              "name": "potential_average_spending",
+              "value": "={{ $json.output.potential_average_spending }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        740,
+        -240
+      ],
+      "id": "b12c9361-b22c-4a47-b1af-c67cb3977f97",
+      "name": "Change to JSON",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH LocationsNotVisitedByUser AS (\n    -- Subquery to find locations in NY not visited by the user\n    SELECT\n        pl.ID AS LOCATION_ID,\n        pl.NAME AS LOCATION_NAME,\n        p.NAME AS PROJECT_NAME,\n        p.BRAND_ID AS BRAND_ID\n    FROM\n        IK_PRODUCTION.PROJECT_LOCATIONS pl\n    JOIN\n        IK_PRODUCTION.PROJECTS p ON pl.PROJECT_ID = p.ID\n    WHERE\n        pl.STATE = 'DC'\n        AND pl.ID NOT IN (\n            SELECT DISTINCT\n                ct.PROJECT_LOCATION_ID\n            FROM\n                IK_PRODUCTION.CREDIT_TRANSACTIONS ct\n            WHERE\n                ct.USER_ID = {{ $json.user_id }}\n                AND ct.PROJECT_LOCATION_ID IS NOT NULL\n        )\n),\nProjectAggregation AS (\n  SELECT\n      lnvu.LOCATION_NAME,\n       OBJECT_CONSTRUCT(\n          'project_name', lnvu.LOCATION_NAME,\n          'min_amount', COALESCE(ROUND(MIN(ct.AMOUNT)), 0),\n          'max_amount', COALESCE(ROUND(MAX(ct.AMOUNT)), 0),\n          'standard_deviation', COALESCE(ROUND(STDDEV(ct.AMOUNT)), 0)::INTEGER,\n          'average_amount', COALESCE(ROUND(AVG(ct.AMOUNT)), 0)\n      ) as project_json\n  FROM\n      LocationsNotVisitedByUser lnvu\n  JOIN\n      IK_PRODUCTION.BRANDS b ON lnvu.BRAND_ID = b.ID\n  JOIN\n      IK_PRODUCTION.BRAND_TAGS bt ON b.VENUE_STYLE = bt.ID\n  LEFT JOIN\n      IK_PRODUCTION.CREDIT_TRANSACTIONS ct ON lnvu.LOCATION_ID = ct.PROJECT_LOCATION_ID\n  WHERE\n      bt.NAME IN ('{{ $json.recomended_cuisine_type[0] }}','{{ $json.recomended_cuisine_type[1] }}')\n  GROUP BY\n      lnvu.LOCATION_NAME\n)\nSELECT\n    ARRAY_AGG(project_json) AS potential_projects\nFROM ProjectAggregation;"
+      },
+      "type": "n8n-nodes-base.snowflake",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -60
+      ],
+      "id": "e1638c1c-524e-46ef-ac71-9c8a23dd1c7a",
+      "name": "Snowflake1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "snowflake": {
+          "id": "0869j4Pe528cuhbe",
+          "name": "Snowflake account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5-coder:7b-instruct",
+        "options": {
+          "temperature": 0,
+          "numCtx": 15000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        0
+      ],
+      "id": "be4e0bb8-93f4-4a14-9329-ad42afe628ec",
+      "name": "Ollama Chat Model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "uArGgrGUknxDJbSn",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The user with the ID  {{ $json.user_id }}\nNeeds recommendations that corresponds his preferences : {{ $json.recomended_cuisine_type[0] }} and {{ $json.recomended_cuisine_type[1] }}\n\nFollowing this rationnal : {{ $json.rationale }}\nAnd his expected spending Average is : {{ $json.potential_average_spending }}\n\nPotential projects are {{JSON.stringify($json.POTENTIAL_PROJECTS)}}",
+        "options": {
+          "systemMessage": "=You are a Recommendation Agent. Your task is to provide personalized project recommendations to a user based on their preferences, spending history and the list of the potential projects\n\nTask:\n\n- Analyze Project Data: Examine the average_amount for each project in the data.\n\n- Filter by Spending: Prioritize projects that have an average_amount close to the user's expected average spending . You should consider projects within a reasonable range of this target (e.g., +/- $20, but use your judgment based on the data).\n\n- Consider Spending Consistency: If available, factor in the standard_deviation when assessing projects. Lower standard deviation might indicate more predictable spending, which could be a positive factor.\n\n- Select Recommendations: Based on your analysis, select the four most suitable project names to recommend to the user.\n\n- Generate Output:  Provide your recommendations in the following format (plain text, no markdown, no JSON), replacing the bracketed placeholders with your recommendations and rationales:\n\n```markdown\n**Recommendations for User [User ID] in NY **\n\n\n**Project Name: [Project Name 1] **\n\n\nRational: [rational for recommending this project,referencing the project's average spending and its alignment with the user's preferences and expected spending.]\n\n\n**Project Name: [Project Name 2]**\n\n\nRational: [rational for recommending this project, referencing the project's average spending and its alignment with the user's preferences and expected spending.]\n\n\n**Project Name: [Project Name 3]**\n\n\nRational: [rational for recommending this project, referencing the project's average spending and its alignment with the user's preferences and expected spending.]\n\n\n**Project Name: [Project Name 4]**\n\n\nRational: [rational for recommending this project, referencing the project's average spending and its alignment with the user's preferences and expected spending.]\n\n\n```\n\n\nImportant Considerations:\n\n- Data-Driven: Your recommendations MUST be based on the provided Informations data and the user's stated preferences.\n- Expected Spending: You MUST Prioritize projects with an average_amount close to {{ $json.potential_average_spending }}.\n- Clarity: Provide clear and concise rationales for each recommendation.\n- Format: Strictly adhere to the specified output format."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1400,
+        -220
+      ],
+      "id": "9127aeb8-82a8-4b44-ad74-9e50c879683a",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1160,
+        -220
+      ],
+      "id": "97a580ef-23eb-46e6-a58a-28b6593054c9",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Snowflake": {
+      "main": [
+        []
+      ]
+    },
+    "User_PROFILE_Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "User_PROFILE": {
+      "main": [
+        [
+          {
+            "node": "Snowflake",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Output": {
+      "main": [
+        [
+          {
+            "node": "Change to JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Change to JSON": {
+      "main": [
+        [
+          {
+            "node": "Snowflake1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Snowflake1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        []
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "28077327-d3c5-479b-ba98-6e49646236a0",
+  "meta": {
+    "instanceId": "089593b0375f52cffd2e682594e43cdd96459883230a04bef809490471c267bb"
+  },
+  "id": "cY3o65S2fLIhvSHa",
+  "tags": []
+}

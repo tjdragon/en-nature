@@ -1,0 +1,27 @@
+Show restaurants in Seattle that offer contactless delivery.
+
+Here are some restaurants in Seattle that offer contactless delivery:
+
+*   **ROCCO'S:** (Rating: 4.5, Price Level: €€)
+*   **Zeeks Pizza:** (Rating: 4.3, Price Level: €€)
+*   **Serious Pie Downtown:** (Rating: 4.4, Price Level: €€)
+*   **Din Tai Fung:** (Rating: 4.5, Price Level: €€)
+*   **Post Alley Pizza:** (Rating: 4.5, Price Level: €)
+*   **Snappy Dragon:** (Rating: 4.3, Price Level: €€)
+*   **Alibi Room:** (Rating: 4.6, Price Level: €€)
+*   **Fitchi House:** (Rating: 4.5, Price Level: €)
+*   **Hot Mama's Pizza:** (Rating: 4.4, Price Level: €)
+*   **Dream Dinners Seattle:** (Rating: 5, Price Level: €€)
+*   **Pizzeria La Rocca:** (Rating: 4.7, Price Level: €€)
+*   **World Pizza:** (Rating: 4.6, Price Level: €)
+*   **Numero Uno Pizza:** (Rating: 4.7, Price Level: €)
+*   **Von's 1000 Spirits:** (Rating: 4.6, Price Level: €€)
+*   **Saffron Grill:** (Rating: 4.4, Price Level: €€)
+*   **RAZZíS PIZZERíA DOWNTOWN:** (Rating: 4.2, Price Level: €€)
+*   **Harried & Hungry:** (Rating: 4.7, Price Level: €)
+*   **HoneyHole Sandwiches:** (Rating: 4.6, Price Level: €€)
+*   **Hurry Curry of Tokyo - South Lake Union:** (Rating: 4.1, Price Level: €€)
+*   **RAZZíS PIZZERíA GREENWOOD:** (Rating: 4.3, Price Level: €€)
+
+Is there a particular type of cuisine you're interested in, or a specific neighborhood you'd like to focus on?
+

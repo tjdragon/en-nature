@@ -1,0 +1,4 @@
+Find me restaurants in Chicago that are open late for a midnight snack.
+
+What type of cuisine are you in the mood for?
+

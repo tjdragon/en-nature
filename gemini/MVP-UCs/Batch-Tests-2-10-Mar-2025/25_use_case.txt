@@ -1,0 +1,13 @@
+Find a restaurant in San Jose that offers both breakfast and dinner.
+
+Here are some restaurants in San Jose that offer both breakfast and dinner:
+
+*   **The Table:** (Rating: 4.3, Price Level: €€). Note that they have different opening hours for different days of the week, so it's best to check ahead.
+*   **John's of Willow Glen:** (Rating: 4.4, Price Level: €€)
+*   **The Cup & Saucer:** (Rating: 4.4, Price Level: €€)
+*    **Crepevine Restaurants:** (Rating: 4.5, Price Level: €€)
+*    **Southern Kitchen:** (Rating: 4.4, Price Level: €)
+*    **Uncle John's Pancake House** (Rating: 4.6, Price Level: €€)
+
+Does any of these sound interesting?
+

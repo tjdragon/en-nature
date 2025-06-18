@@ -1,0 +1,4 @@
+Show me restaurants near a specific landmark (e.g., near the Golden Gate Bridge).
+
+Okay, I can do that. Please provide the name of the landmark, and I will find restaurants in that area.
+

@@ -1,0 +1,11 @@
+Find a restaurant in Houston with strong ratings and a reservation system.
+
+Okay, here are some high-rated restaurants in Houston that offer reservations:
+
+*   **The Warwick:** Offers globally inspired American cuisine and creative cocktails in a chic space. (Rating: 4.8, Price Level: €€€)
+*   **La Stella Cucina Verace:** Authentic, upscale Italian restaurant (Rating: 4.8, Price Level: €€€)
+*   **St. Martin's Wine Bistro:** Featuring classic French cuisine (Rating: 4.6, Price Level: €€€)
+*   **Guard and Grace - Houston:** Offering a modern steakhouse experience with oak-fired dishes. (Rating: 4.5, Price Level: €€€)
+
+Do any of these sound interesting, or would you like me to refine the search further based on specific cuisines or ambiance?
+

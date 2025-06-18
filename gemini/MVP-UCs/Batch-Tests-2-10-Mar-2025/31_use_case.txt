@@ -1,0 +1,17 @@
+Find a restaurant in Orlando that caters to vegetarians.
+
+Here are some restaurants in Orlando that offer vegetarian options:
+
+*   **Market On South- NEW Management:** Vegan diner serving a variety of comfort foods. (Rating: 4.6, Price Level: €€)
+*   **Dharma Southern Kitchen:** Counter-serve spot serving comfort food. (Rating: 4.6, Price Level: €€)
+*   **Earthy Picks Vegan Cafe:** Cozy stop for Latin American–style vegan fare. (Rating: 4.9, Price Level: €€)
+*   **Soulicious Vegan Kitchen:** Plant-based meal-prep service specializing in hearty, home-cooked favorites. (Rating: 4.9)
+*   **Fresh Kitchen:** Trendy fast-casual restaurant offering health-focused New American fare. (Rating: 4.6, Price Level: €)
+*   **JJ's Fresh from Scratch (Restaurant and Catering Kitchen):** Counter-serve eatery offering Latin American and Mediterranean-inspired bowls, salads, and pita sandwiches. (Rating: 4.8, Price Level: €)
+*   **Veggie Garden:** Cozy restaurant with indoor and outdoor seating serving creative vegan Vietnamese plates. (Rating: 4.7, Price Level: €)
+*   **Winter Park Biscuit Company:** Vegan counter-service restaurant in East End Market serving up sandwiches, biscuits, and other comfort food. (Rating: 4.6, Price Level: €€)
+*   **Clean Eatz:** Cafe featuring health-minded burgers, bowls, wraps, and flatbreads, plus a weekly meal plan service. (Rating: 4.6, Price Level: €€)
+*   **The Madras Cafe:** Casual spot featuring a menu of South Indian and Indo-Chinese fare. (Rating: 4.5, Price Level: €€)
+
+Is there any particular type of vegetarian cuisine you're looking for, or any other preferences you have?
+

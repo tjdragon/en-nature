@@ -1,0 +1,10 @@
+Show restaurants in San Jose that cater to both dine-in and takeaway preferences.
+
+Here are some highly-rated casual dining restaurants in San Jose that offer both dine-in and takeout:
+
+*   **Urban Plates:** A chain serving health-conscious New American fare. (Rating: 4.8, Price Level: €€)
+*   **Bill's Café - Willow:** A Willow Glen favorite with classic American breakfast and lunch. (Rating: 4.6, Price Level: €€)
+*   **Bill's Cafe - Alameda:** A family-friendly spot with a traditional American menu. (Rating: 4.5, Price Level: €€)
+
+To help me narrow down the best recommendation for you, what type of cuisine do you prefer and what is your budget?
+

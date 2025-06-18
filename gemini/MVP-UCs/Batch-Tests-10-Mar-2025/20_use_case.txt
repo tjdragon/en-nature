@@ -1,0 +1,10 @@
+Recommend a restaurant with modern décor and a 4.2+ star rating in Denver.
+
+I found one restaurant in Denver that fits your criteria:
+
+*   **Mercantile:** This upscale restaurant serves seasonal American fare in Union Station. It has a rating of 4.5 stars and is known for its modern decor.
+    *   Address: 1701 Wynkoop St #155, Denver, CO 80202, USA
+    *   Rating: 4.5 (1750 reviews)
+
+Would you like more details about Mercantile?
+

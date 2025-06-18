@@ -1,0 +1,11 @@
+Find me restaurants in Chicago that are open late for a midnight snack.
+
+Here are some of the highest-rated restaurants in Chicago that are open late and suitable for a midnight snack:
+
+*   **White Palace Grill:** Open 24 hours, this enduring diner offers comfort food. (Rating: 4.2, Price Level: €)
+*   **Griddle 24:** Also open 24 hours, this casual diner serves American fare, breakfast, and burgers. (Rating: 4.3, Price Level: €€)
+*   **Jim's Original:** If you're in the mood for a hot dog or Maxwell Street Polish, this spot is open until 1:00 AM. (Rating: 4.5, Price Level: €)
+*   **Little Bad Wolf:** A trendy option for New American fare like sliders and tacos, open until midnight or later. (Rating: 4.6, Price Level: €€)
+
+Please note that while many of these locations are listed as open late, hours can vary, so it's always a good idea to confirm before heading out, especially for very late-night dining.
+

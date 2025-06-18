@@ -1,0 +1,11 @@
+Find a restaurant in Portland with a dedicated outdoor seating area.
+
+Here are some restaurants in Portland with dedicated outdoor seating areas:
+
+*   **Produce Row Cafe:** Trendy locale offering Northwest American cuisine and craft beer with a popular patio. (Rating: 4.3, Price Level: €€)
+*   **Il Terrazzo:** Casual Italian eatery offering vegetarian dishes and wines along with river views. (Rating: 4.4, Price Level: €€)
+*   **Tin Shed Garden Cafe:** Casual American restaurant with a fireplace serving up brunch-to-dinner comfort food and craft beer (Rating: 4.6, Price Level: €€)
+*   **Backyard Social:** Neighborhood restaurant with a seasonally changing menu, a cocktail bar, and a backyard patio. (Rating: 4.5, Price Level: €€)
+
+Which of these sounds best to you? Do you have a preference for the type of cuisine or price?
+

@@ -1,0 +1,4 @@
+Find me a restaurant in Boston with outdoor seating and a scenic view.
+
+What type of cuisine are you in the mood for, and which area of Boston are you interested in?
+

@@ -1,0 +1,17 @@
+Find me a fine dining restaurant in New York with a reservation system.
+
+Here are some highly-regarded fine dining restaurants in New York with reservation systems:
+
+*   **Le Bernardin:** Renowned for its exquisite seafood and French cuisine. (Rating: 4.6, Price Level: €€€)
+*   **The Modern:** Features refined American cuisine in a contemporary setting at the Museum of Modern Art. (Rating: 4.6, Price Level: €€€)
+*   **Per Se:** Offers a chef's tasting menu of Japanese cuisine (Rating: 4.5, Price Level: €€€)
+*   **Atera:** Serves tasting menus of New American cuisine in an intimate setting with an open kitchen. (Rating: 4.6, Price Level: €€€)
+*   **Craft:** Features American comfort food and local ingredients in an upscale space. (Rating: 4.5, Price Level: €€€)
+*   **Eleven Madison Park:** Offers a plant-based tasting menu in an Art Deco building. (Rating: 4.4, Price Level: €€€)
+*   **Ocean Prime:** (Rating: 4.6, Price Level: €€€)
+*   **Gabriel Kreuther:** (Rating: 4.6, Price Level: €€€)
+*   **Daniel:** Acclaimed for its French cuisine and fine wine, also offering a tasting menu. (Rating: 4.6, Price Level: €€€)
+*   **Mastro's Steakhouse:** (Rating: 4.5, Price Level: €€€)
+
+Do any of these catch your eye, or would you like me to narrow it down further based on cuisine, location or other factors?
+

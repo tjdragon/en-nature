@@ -1,0 +1,628 @@
+{
+  "name": "IK-JARVIS",
+  "nodes": [
+    {
+      "parameters": {
+        "contextWindowLength": 250
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        500,
+        700
+      ],
+      "id": "c071368f-ba73-4db3-aa5f-ad672ae038cf",
+      "name": "Window Buffer Memory1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {
+          "temperature": 0.5
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        260,
+        700
+      ],
+      "id": "4cff6ee8-ea5a-417d-8295-562ea4c906e6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "KKZKWAbeapPNYp0y",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a friendly, helpful, and engaging personal assistant who specializes in recommending restaurants. Your mission is to provide personalized dining suggestions based on the user's preferences—whether that involves a specific cuisine, dietary needs, budget, or desired atmosphere.\n\nTHE CURRENT LOCATION OF THE USER :\n- The DEFAULT location of the USER is the Flatiron Building in New York. IF the user specifies another location, use that instead.\n\nKey Instructions:\n1. ALWAYS USE THE search_places_with_details FUNCTION when the user asks for restaurant or dining recommendations. This is your only source of current, accurate restaurant data.\n2. Engage in a warm, conversational, and natural manner. Use friendly and supportive language to build rapport.\n3. Listen carefully to the user's preferences. Ask clarifying questions such as:\n   - \"What type of cuisine are you in the mood for today?\"\n   - \"Do you have any dietary restrictions or a preferred budget?\"\n   - \"Which area would you like to explore?\"\n4. When making a recommendation, immediately construct a query (e.g., \"Italian restaurants near the Flatiron Building, New York\" or \"Japanese ramen near the Flatiron Building, New York\" if no other location is provided) and call the search_places_with_details function.\n5. Present multiple restaurant options that include the restaurant name and a brief description of the cuisine.\n6. If no exact match is found, politely suggest broadening the search criteria.\n7. If the user asks specifically for IK partner restaurants, then ensure that the query passed to the tool includes that criterion (e.g., \"IK partner Italian restaurants near the Flatiron Building, New York\").\n\nFormatting Instructions:\n- Your final answer must be detailed and presented in a human-friendly, multi-line format. Use bullet points or separate lines for key details.\n- Avoid providing a single, long paragraph. Each detail should be on its own line or clearly separated so that it is easy to read.\n\n\nTOOL: search_places_with_details\nDescription:\nThis function performs a comprehensive restaurant search using the Google Maps Places API. When provided with a query string that combines cuisine type and location (e.g., \"Italian restaurants near the Flatiron Building, New York\"), it returns a formatted string containing detailed information about each matching restaurant. The output includes key details such as the restaurant name, a brief description of the cuisine, address, ratings, price range, and other relevant information.\nUsage:\n- Call the function as: search_places_with_details(query, max_results=5)\n- Parameters:\n   • query (string): A text search string that includes the type of cuisine and the location. If the user requests IK partner restaurants, include that in the query (e.g., \"IK partner Italian restaurants near the Flatiron Building, New York\").\n   • max_results (integer, optional): The maximum number of restaurants to return. Default is 5.\nExpected Output:\n- A formatted string with comprehensive details for each restaurant, including the restaurant name and a brief description of its cuisine.\n- If no matching restaurants are found, an appropriate message indicating that no results were found.\n\nExample Conversation Flow 1:\nUser: \"I'm looking for a nice dinner spot tonight.\"\nYou: \"That sounds exciting! What kind of cuisine are you in the mood for, and is there a particular area you'd like to explore?\"\nUser: \"I'm in the mood for Italian, somewhere downtown.\"\nYou: [Immediately call search_places_with_details with the query \"Italian restaurants near the Flatiron Building, New York\" or use the provided location if specified]\nThen say: \"Based on my search, I've found several charming Italian spots. For instance, one restaurant is known for its authentic pasta and cozy atmosphere, while another offers a relaxed vibe perfect for dinner. Would you like more details on any of these options?\"\n\nExample Conversation Flow 2 (IK Partners):\nUser: \"Do you have any IK partners around here?\"\nYou: \"Absolutely! Are you looking for IK partner restaurants near your current location, which is around the Flatiron Building in New York, or is there another area you're interested in?\"\nUser: \"I'm happy with my current area.\"\nYou: [Immediately call search_places_with_details with the query \"IK partner restaurants near the Flatiron Building, New York\"]\nThen say: \"Based on my search, I've found some great IK partner restaurants nearby. One option offers a modern twist on classic dishes, and another is celebrated for its farm-to-table ingredients. Would you like more details on any of these options?\"\n\nRemember: Your recommendations must always come from real-time data provided by the search_places_with_details tool. Let's make every dining decision a delightful experience!\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        500
+      ],
+      "id": "d2228c23-3480-47d9-871d-5cdccfdc80e6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"query\": \"a string\",\n  \"max_results\": 123\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        100,
+        -160
+      ],
+      "id": "38439ee1-1d2d-47c9-b717-b40530e07e19",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        140,
+        500
+      ],
+      "id": "153081f8-b7f4-4d74-b33f-59b3742fdf00",
+      "name": "When chat message received",
+      "webhookId": "0d8f0ed3-c6c6-4aa5-974b-8a3c21bd9fa9"
+    },
+    {
+      "parameters": {
+        "name": "search_places_with_details",
+        "description": "Call this tool to Search Google Maps for places matching the query, and fetch detailed info for each place.",
+        "workflowId": {
+          "__rl": true,
+          "value": "W9FMl5gxLGfxMM7g",
+          "mode": "list",
+          "cachedResultName": "IK-JARVIS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "max_results",
+              "displayName": "max_results",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        720,
+        660
+      ],
+      "id": "cdc13300-b6ec-4137-8cbf-b6aad6b1b4a5",
+      "name": "search_places_with_details"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "places",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        840,
+        -160
+      ],
+      "id": "70495083-3073-42fb-9326-c3aeb310146e",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1140,
+        -160
+      ],
+      "id": "ff7ea64e-553e-4d75-b31f-5751acbf7d1a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "16d023a1-b195-42f0-8008-bf58996f9afd",
+              "name": "RestaurantName",
+              "value": "={{ $json.displayName.text }}",
+              "type": "string"
+            },
+            {
+              "id": "1ed64519-844a-4b31-8084-da05cb5d3555",
+              "name": "Overview",
+              "value": "={{ $json.generativeSummary.overview.text }}",
+              "type": "string"
+            },
+            {
+              "id": "10ce8937-692a-4b76-936a-3b7d8a583a92",
+              "name": "Description",
+              "value": "={{ $json.generativeSummary.description.text }}",
+              "type": "string"
+            },
+            {
+              "id": "acf7bff3-b7b9-4c1d-8f5e-883777922a91",
+              "name": "editorialSummary",
+              "value": "={{ $json.editorialSummary.text }}",
+              "type": "string"
+            },
+            {
+              "id": "79883a78-96a0-4f22-9d38-c45951b60a76",
+              "name": "Address",
+              "value": "={{ $json.formattedAddress }}",
+              "type": "string"
+            },
+            {
+              "id": "c5889cdc-02f4-4905-9c2b-91f06561d50f",
+              "name": "internationalPhoneNumber",
+              "value": "={{ $json.internationalPhoneNumber }}",
+              "type": "string"
+            },
+            {
+              "id": "f184dcdd-e141-40ab-866b-3de055a5f9c1",
+              "name": "nationalPhoneNumber",
+              "value": "={{ $json.nationalPhoneNumber }}",
+              "type": "string"
+            },
+            {
+              "id": "9264ffce-9369-41c1-90d4-454257895022",
+              "name": "location",
+              "value": "={{ $json.location }}",
+              "type": "object"
+            },
+            {
+              "id": "f7b13c83-667e-48fb-b66d-8f005586bec4",
+              "name": "rating",
+              "value": "={{ $json.rating }}",
+              "type": "number"
+            },
+            {
+              "id": "c9608508-fcd0-4dd1-a8bc-540b70dc5b72",
+              "name": "websiteUri",
+              "value": "={{ $json.websiteUri }}",
+              "type": "string"
+            },
+            {
+              "id": "f118f8d9-b0b9-44aa-ad98-6b4d723b6865",
+              "name": "priceLevel",
+              "value": "={{ $json.priceLevel }}",
+              "type": "string"
+            },
+            {
+              "id": "c205c792-af80-4dce-8802-e1d36b3e407d",
+              "name": "userRatingCount",
+              "value": "={{ $json.userRatingCount }}",
+              "type": "number"
+            },
+            {
+              "id": "db9affea-2ded-4fab-bae3-435fa846ce38",
+              "name": "takeout",
+              "value": "={{ $json.takeout }}",
+              "type": "string"
+            },
+            {
+              "id": "abeb42bf-bdb8-403a-9e21-4163490adad6",
+              "name": "delivery",
+              "value": "={{ $json.delivery }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fc5a0eb6-afe5-40c7-b478-16d90bfbe6cf",
+              "name": "dineIn",
+              "value": "={{ $json.dineIn }}",
+              "type": "boolean"
+            },
+            {
+              "id": "b12dbccb-8937-47e2-bfb7-a1b3db6fef6b",
+              "name": "servesBreakfast",
+              "value": "={{ $json.servesBreakfast }}",
+              "type": "boolean"
+            },
+            {
+              "id": "0c7f77d9-82e1-48ab-9d8a-cfae117b6ca1",
+              "name": "servesLunch",
+              "value": "={{ $json.servesLunch }}",
+              "type": "boolean"
+            },
+            {
+              "id": "42c32ab0-e423-4626-8f41-31ee992002bd",
+              "name": "servesDinner",
+              "value": "={{ $json.servesDinner }}",
+              "type": "boolean"
+            },
+            {
+              "id": "70bc70bc-f33c-420c-ae00-ba721488cf0e",
+              "name": "servesBeer",
+              "value": "={{ $json.servesBeer }}",
+              "type": "boolean"
+            },
+            {
+              "id": "f837cbca-897f-4831-9fe3-5a8a85ae5662",
+              "name": "servesWine",
+              "value": "={{ $json.servesWine }}",
+              "type": "boolean"
+            },
+            {
+              "id": "164ae2e3-4497-4c7c-8360-b54b3b4df32c",
+              "name": "currentOpeningHours",
+              "value": "={{ $json.currentOpeningHours.weekdayDescriptions }}",
+              "type": "array"
+            },
+            {
+              "id": "4cf68983-7684-4eeb-89e8-ae56d1b317e3",
+              "name": "paymentOptions",
+              "value": "={{ $json.paymentOptions }}",
+              "type": "object"
+            },
+            {
+              "id": "4e270153-9b24-44f6-8e9b-2c1f07075f48",
+              "name": "accessibilityOptions",
+              "value": "={{ $json.accessibilityOptions }}",
+              "type": "object"
+            },
+            {
+              "id": "3d2724c4-3956-4b37-927d-f36d16d67666",
+              "name": "openNow",
+              "value": "={{ $json.currentOpeningHours.openNow }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1820,
+        60
+      ],
+      "id": "b0bc6c3b-ea3c-4bf7-86d1-3e1d3e77ad4d",
+      "name": "Edit Fields",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1600,
+        60
+      ],
+      "id": "e050cf56-01c8-489b-8f3a-5f4930183a4a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "TOOL_RESULT",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        -160
+      ],
+      "id": "5c4ede17-b5f2-4803-b6e1-f9c441a58014",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a36830a0-5732-432f-8f21-1dced6c46e64",
+              "name": "query",
+              "value": "={{ $json.query }}",
+              "type": "string"
+            },
+            {
+              "id": "15270307-5033-446c-b426-404c5133a791",
+              "name": "max_results",
+              "value": "={{ $json.max_results }}",
+              "type": "number"
+            },
+            {
+              "id": "4199ce03-bfa9-4461-9ca7-a7c195664f23",
+              "name": "apiKey",
+              "value": "...-...",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        360,
+        -160
+      ],
+      "id": "e63ac4c9-6ecf-40b2-80c6-2945f3945344",
+      "name": "SET-GOOGLE-MAPS-KEY"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://places.googleapis.com/v1/places:searchText",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Goog-Api-Key",
+              "value": "={{ $json.apiKey }}"
+            },
+            {
+              "name": "X-Goog-FieldMask",
+              "value": "places.id,places.businessStatus,places.generativeSummary.overview,places.generativeSummary.description,nextPageToken"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "textQuery",
+              "value": "={{ $json.query }}"
+            },
+            {
+              "name": "pageToken"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "type": "body",
+                    "name": "pageToken",
+                    "value": "={{ $response.body.nextPageToken }}"
+                  }
+                ]
+              },
+              "limitPagesFetched": true,
+              "maxRequests": 1
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        -160
+      ],
+      "id": "58e1db33-d711-4829-9cf9-af43c6bff133",
+      "name": "places:searchText",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "=https://places.googleapis.com/v1/places/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Goog-Api-Key",
+              "value": "AIzaSyAikOif6m1uWI2UZiY-ivRaGK4sFAFO9VE"
+            },
+            {
+              "name": "X-Goog-FieldMask",
+              "value": "=displayName,formattedAddress,location,rating,userRatingCount,websiteUri,nationalPhoneNumber,internationalPhoneNumber,priceLevel,servesBreakfast,servesLunch,servesDinner,servesBeer,servesWine,servesCocktails,servesCoffee,currentOpeningHours,regularOpeningHours,utcOffsetMinutes,accessibilityOptions,takeout,delivery,dineIn,reservable,editorialSummary,paymentOptions"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        80
+      ],
+      "id": "1a93e4c7-bc05-4b6e-8d49-3e7e431a951f",
+      "name": "placesDetails",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Window Buffer Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search_places_with_details": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "SET-GOOGLE-MAPS-KEY",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "placesDetails",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SET-GOOGLE-MAPS-KEY": {
+      "main": [
+        [
+          {
+            "node": "places:searchText",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "places:searchText": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "placesDetails": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0d5f057a-ea70-43a6-8cf6-2511701eb4d7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f218313c65f598f16eac572e4cafd062cf127c8a503c33177804f4f78f9b3df8"
+  },
+  "id": "W9FMl5gxLGfxMM7g",
+  "tags": []
+}

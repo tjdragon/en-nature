@@ -1,0 +1,4 @@
+Show me places in Chicago that serve healthy, organic meals.
+
+What type of cuisine are you in the mood for, and which area of Chicago are you interested in?
+

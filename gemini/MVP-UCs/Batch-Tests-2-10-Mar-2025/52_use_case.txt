@@ -1,0 +1,12 @@
+Recommend a cozy restaurant in Philadelphia known for its artisanal dishes.
+
+Here are some cozy restaurants in Philadelphia known for their artisanal dishes:
+
+*   **Ember & Ash:** Features seasonal, locally sourced cooking with a wood-burning hearth. (Rating: 4.7, Price Level: €€)
+*   **Friday Saturday Sunday:** Offers an upscale American tasting menu in an intimate setting. (Rating: 4.7, Price Level: €€)
+*   **Talula's Garden:** Serves seasonal European-style dishes in a leafy oasis. (Rating: 4.7, Price Level: €€€)
+*   **My Loup:** Features cocktails and small plates in a cozy, upscale eatery with a tasting menu. (Rating: 4.7)
+*   **The Victor Café:** Italian eatery where servers double as opera singers. (Rating: 4.8, Price Level: €€€)
+
+To help me narrow it down, are you interested in a specific cuisine, price range, or neighborhood?
+

@@ -1,0 +1,19 @@
+Find me Italian restaurants in downtown New York with a 4.5+ star rating.
+
+Here are some top-rated Italian restaurants in downtown New York:
+
+*   **Piccola Cucina Osteria Siciliana:** A romantic spot serving classic Sicilian dishes. (Rating: 4.6, Price Level: €€)
+*   **Scalini Fedeli:** An upscale restaurant featuring a tasting menu of Italian dishes in a romantic setting. (Rating: 4.8, Price Level: €€€)
+*   **Casa D'angelo New York:** A longtime, family-owned eatery serving a menu of Italian classics in a casual atmosphere. (Rating: 4.6, Price Level: €€)
+*   **San Carlo Osteria Piemonte:** Upscale Italian restaurant with gluten-free and vegan options plus happy hours, and a tasting menu. (Rating: 4.6, Price Level: €€)
+*   **OLIO E PIÙ:** (Rating: 4.7, Price Level: €€)
+*   **La Bella Vita - NYC:** Heartwarming restaurant offering authentic Italian flavors, plus a fully stocked wine list. (Rating: 4.6, Price Level: €€)
+*   **L’Amore Restaurant:** Italian comfort food such as penne alla vodka and tiramisu served in a casual atmosphere. (Rating: 4.6, Price Level: €€)
+*   **Via Della Pace:** (Rating: 4.6, Price Level: €€)
+*   **La Lanterna di Vittorio:** Vibrant Greenwich Village haunt with thin-crust pizza, Italian pastries, tarot readings, and jazz. (Rating: 4.5, Price Level: €€)
+*   **AMICI:** Family-friendly Italian restaurant in Little Italy offering pizza, pasta, and other comfort food, plus vegetarian options. (Rating: 4.5, Price Level: €€)
+*   **L'Artusi:** Stylish restaurant serving modern versions of classic Italian dishes, with wine pairings, and a cheese bar. (Rating: 4.6, Price Level: €€€)
+*   **Torrisi:** Italian restaurant in the Puck Building serving soul-satisfying food in 2 dining rooms and a vibrant bar. (Rating: 4.6)
+
+Would you like me to refine the search based on a specific cuisine, price range, or neighborhood?
+

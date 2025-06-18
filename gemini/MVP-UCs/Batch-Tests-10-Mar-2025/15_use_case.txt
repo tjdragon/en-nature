@@ -1,0 +1,33 @@
+Find a fine dining restaurant that offers private dining in San Diego.
+
+I found some fine dining restaurants in San Diego that offer private dining:
+
+*   **Juniper and Ivy:** Offers a chef-driven, seasonal menu of small plates, plus an extensive wine list.
+    *   Rating: 4.6 stars
+*   **Island Prime:** Serves steaks, seafood, and cocktails on stilts over the San Diego Bay.
+    *   Rating: 4.6 stars
+*   **Eddie V's Prime Seafood:** An upscale choice featuring an extensive seafood menu, plus live music.
+    *   Rating: 4.7 stars
+*   **Herb & Wood:** Rustic, wood-fired plates with Mediterranean flavors served in an upscale setting.
+    *   Rating: 4.5 stars
+*   **Born and Raised:** Upscale steakhouse with a 1920s-style bar and rooftop seating.
+    *   Rating: 4.5 stars
+*   **Fleming’s Prime Steakhouse & Wine Bar:** Upscale chain chophouse with filet mignon and other premium steaks plus wine and cocktails.
+     *   Rating: 4.6 stars
+*   **Black Radish:** Offers small plates and tasting menus in an intimate setting with a bar and a focus on California wines.
+    *   Rating: 4.8 stars
+*   **Mister A's:** Offers American and French dishes with panoramic views of the city and bay.
+    *   Rating: 4.6 stars
+*   **Eddie V's Prime Seafood:** Features fresh seafood.
+    *   Rating: 4.7 stars
+*   **Baci Restaurant:** Serves seafood and vegetarian options in an intimate setting.
+    *   Rating: 4.8 stars
+*   **ADDISON:** Upscale eatery at the Fairmont Grand Del Mar offering a 10-course tasting menu with wine pairings.
+    *   Rating: 4.5 stars
+*    **Grant Grill:** Steakhouse with seasonal California cuisine.
+    *   Rating: 4.5 stars
+*   **The Godfather:** Classic Italian dishes served in an elegant setting with white tablecloths and black-tie service, and live piano music.
+    *   Rating: 4.6 stars
+
+Would you like more details on any of these options?
+

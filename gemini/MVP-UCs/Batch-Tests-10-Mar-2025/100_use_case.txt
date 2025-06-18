@@ -1,0 +1,11 @@
+What do you want for dinner?
+
+That's a great question! To give you the best recommendation, I need a little more information. Could you tell me:
+
+1.  **What type of cuisine are you in the mood for?** (e.g., Italian, Mexican, American, Seafood, etc.)
+2.  **Do you have any dietary restrictions or preferences?** (e.g., vegetarian, vegan, gluten-free)
+3.  **Are you looking for something casual or more upscale?**
+4.  **Are you in the Flatiron Building in New York, or are you in another location?**
+
+Once I have this information, I can provide a personalized recommendation using the search tool!
+

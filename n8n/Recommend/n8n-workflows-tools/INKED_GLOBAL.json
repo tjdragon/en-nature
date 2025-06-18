@@ -1,0 +1,262 @@
+{
+  "name": "INKED_GLOBAL",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "How can i help you ?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1520,
+        380
+      ],
+      "id": "f3f78f3b-3370-4a75-8e44-f81f66ebada7",
+      "name": "When chat message received",
+      "webhookId": "183abe3a-b677-4c94-b6e5-84d65d255a20"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.user_id ? 'The user_id is : ' + $json.user_id + '' : '' }}\n{{ $json.address ? 'the address is: \"' + $json.address + '\"\\n' : '' }}\n{{ $json.chatInput ? 'Is saying : \"' + $json.chatInput + '\"\\n\\n' : '' }}\n{{ $json.output ? 'User profile informations : \\n\"' + $json.output + '\"\\n\\n' : '' }}",
+        "options": {
+          "systemMessage": "=\nTOOLS\n------\nThe Assistant can call tools autonomously to retrieve necessary information. The available tools are:\n\n1. Find_Coordinates_Tool – Converts a user-provided address into latitude and longitude.\n2. Geoloc_Tool – Finds restaurants based on user ID, latitude, and longitude. This tool must be called only in the exact format:\n   \"userID,latitude,longitude\"\n\nROLE & FUNCTIONALITY\n\nThe Assistant is an AI-powered restaurant recommendation system. It gathers user preferences, retrieves location data, and provides personalized dining suggestions.\n\nThe Assistant will:\n- Request & retain essential details: user address, user ID, cuisine preferences, and budget.\n- Autonomously call tools: Convert an address to coordinates and fetch restaurant data when needed.\n- Ensure smooth interactions: Only ask for missing information; avoid redundant questions.\n- Analyze & recommend: Process retrieved restaurant data to suggest the best dining options.\n\nRULES FOR TOOL USAGE\n\n1. If only the address is provided → Call Find_Coordinates_Tool.\n2. If address + user ID are provided → Call Find_Coordinates_Tool, then immediately call Geoloc_Tool.\n3. If user ID + latitude/longitude are provided → Call Geoloc_Tool directly.\n4. If a new address is given → Re-run Find_Coordinates_Tool before proceeding.\n\nThe Assistant must always format tool calls and responses in JSON only, avoiding markdown or other formats.\n\nImportant:\n- Geoloc_Tool must always be called in the format: \"userID,latitude,longitude\".\n- The Assistant must prioritize efficiency and minimize unnecessary interactions while maintaining a natural and engaging conversation.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -880,
+        380
+      ],
+      "id": "5b257d06-78f9-4391-83e9-3bc57ea0a915",
+      "name": "Refining specialist",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Add_Stuff').item.json.sessionId }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -780,
+        600
+      ],
+      "id": "adf568c1-8dd7-4b43-9bca-068a5df58224",
+      "name": "Window Buffer Memory1"
+    },
+    {
+      "parameters": {
+        "name": "Geoloc_tool",
+        "description": "Finds restaurants based on user ID, latitude, and longitude.",
+        "workflowId": {
+          "__rl": true,
+          "value": "cC7K6Fj2R8GYtcad",
+          "mode": "list",
+          "cachedResultName": "INKED_Geoloc_Tool_Workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        -620,
+        600
+      ],
+      "id": "fcf0e3a5-75bd-475f-a10f-abfa88dd31a2",
+      "name": "Geoloc_tool"
+    },
+    {
+      "parameters": {
+        "name": "Find_Coordinates_Tool",
+        "description": "Use this tool to get the latitude and longitude of an address",
+        "workflowId": {
+          "__rl": true,
+          "value": "I5zmVOsbOWSHM8d1",
+          "mode": "list",
+          "cachedResultName": "INKED_Find_Coordinates_Tool_Workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        -460,
+        580
+      ],
+      "id": "c1655180-7f6c-4f7d-bc83-b598023883b1",
+      "name": "Find_Coordinates_Tool"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        580
+      ],
+      "id": "d12932af-e83d-43a0-b459-f788125f9991",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "m6xUpPBETYY7P9r7",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b562eca8-b7ae-4906-b1f6-3005499604f0",
+              "name": "address",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "e8f881f8-5597-4aa2-a743-d81bc21ba293",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "2977812e-9e4f-4730-b679-3f5dfa4959f3",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            },
+            {
+              "id": "d16464c3-6246-4a07-90bc-992d2b095006",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "8df272ee-e0fe-4068-9666-cd5464471078",
+              "name": "user_id",
+              "value": "134839",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1240,
+        380
+      ],
+      "id": "a5d4b406-ce74-4c74-90d2-3181fedcec5b",
+      "name": "Add_Stuff"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Add_Stuff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Refining specialist",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Geoloc_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Refining specialist",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refining specialist": {
+      "main": [
+        []
+      ]
+    },
+    "Find_Coordinates_Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Refining specialist",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Refining specialist",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add_Stuff": {
+      "main": [
+        [
+          {
+            "node": "Refining specialist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fb13d619-bbf1-44cc-b2fb-34e238961732",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "089593b0375f52cffd2e682594e43cdd96459883230a04bef809490471c267bb"
+  },
+  "id": "6dOppeGMiCME0lMK",
+  "tags": []
+}

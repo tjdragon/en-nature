@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recorder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        .recording {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        #audioPreview {
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Audio Recorder</h1>
+    <p>Record audio and send it to the server for storage.</p>
+    
+    <div class="controls">
+        <button id="recordButton">Start Recording</button>
+        <button id="stopButton" disabled>Stop Recording</button>
+        <button id="sendButton" disabled>Send to Server</button>
+    </div>
+    
+    <div id="status"></div>
+    
+    <audio id="audioPreview" controls></audio>
+    
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let audioBlob;
+        let audioUrl;
+        
+        const recordButton = document.getElementById('recordButton');
+        const stopButton = document.getElementById('stopButton');
+        const sendButton = document.getElementById('sendButton');
+        const statusDiv = document.getElementById('status');
+        const audioPreview = document.getElementById('audioPreview');
+        
+        // Initialize the media recorder
+        async function setupMediaRecorder() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.onstop = () => {
+                    audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    audioUrl = URL.createObjectURL(audioBlob);
+                    audioPreview.src = audioUrl;
+                    sendButton.disabled = false;
+                    
+                    updateStatus('Recording stopped. Click "Send to Server" to upload.', 'success');
+                };
+                
+                return true;
+            } catch (error) {
+                updateStatus(`Error accessing microphone: ${error.message}`, 'error');
+                return false;
+            }
+        }
+        
+        // Start recording
+        recordButton.addEventListener('click', async () => {
+            if (!mediaRecorder) {
+                const initialized = await setupMediaRecorder();
+                if (!initialized) return;
+            }
+            
+            audioChunks = [];
+            audioPreview.src = '';
+            sendButton.disabled = true;
+            
+            mediaRecorder.start();
+            recordButton.disabled = true;
+            stopButton.disabled = false;
+            
+            updateStatus('Recording in progress...', 'recording');
+        });
+        
+        // Stop recording
+        stopButton.addEventListener('click', () => {
+            mediaRecorder.stop();
+            recordButton.disabled = false;
+            stopButton.disabled = true;
+        });
+        
+        // Send the recording to the server
+        sendButton.addEventListener('click', async () => {
+            if (!audioBlob) {
+                updateStatus('No recording available to send', 'error');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('audio', audioBlob, 'recording.wav');
+            
+            sendButton.disabled = true;
+            updateStatus('Sending recording to server...', 'success');
+            
+            try {
+                const response = await fetch('http://localhost:5000/upload', {
+                    method: 'POST',
+                    body: formData,
+                    // Add these headers explicitly
+                    headers: {
+                        // Don't set Content-Type when using FormData
+                        // Let the browser set it with the correct boundary
+                    }
+                });
+                
+                if (response.ok) {
+                    try {
+                        const result = await response.json();
+                        updateStatus(`Success: ${result.message}`, 'success');
+                    } catch (jsonError) {
+                        // Handle cases where response is not JSON
+                        const textResponse = await response.text();
+                        updateStatus(`Success: File uploaded (${textResponse.substring(0, 50)}...)`, 'success');
+                    }
+                } else {
+                    try {
+                        const error = await response.json();
+                        updateStatus(`Error: ${error.error || 'Server error'}`, 'error');
+                    } catch (jsonError) {
+                        const textError = await response.text();
+                        updateStatus(`Error: ${textError || 'Server error'}`, 'error');
+                    }
+                }
+            } catch (error) {
+                updateStatus(`Network error: ${error.message}`, 'error');
+            } finally {
+                sendButton.disabled = false;
+            }
+        });
+        
+        // Update status message
+        function updateStatus(message, type) {
+            statusDiv.textContent = message;
+            statusDiv.className = type;
+        }
+    </script>
+</body>
+</html>

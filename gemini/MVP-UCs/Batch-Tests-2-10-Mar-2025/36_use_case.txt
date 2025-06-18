@@ -1,0 +1,4 @@
+Show me trendy coffee shops with lunch menus near my location.
+
+I need to know your current location to find coffee shops near you. Could you please provide that?
+

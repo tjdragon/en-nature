@@ -1,0 +1,4 @@
+Find a restaurant in New York that’s ideal for a business dinner.
+
+To give you the best recommendation, what type of cuisine are you interested in, and what part of New York are you considering for your business dinner?
+

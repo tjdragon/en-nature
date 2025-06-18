@@ -1,0 +1,11 @@
+Find a restaurant in Austin with a focus on locally sourced ingredients.
+
+Here are some highly-rated restaurants in Austin that focus on locally sourced ingredients:
+
+*   **Lula Cafe:** Uses locally sourced ingredients. Known for its delicious food and cozy ambiance. (Rating: 4.7, Price Level: €€)
+*   **Corner Restaurant:** Features modern twists on Texas favorites. (Rating: 4.9, Price Level: €€)
+*    **Corinne Austin** (Rating: 4.8, Price Level: €€)
+*   **The Stable** (Rating: 4.7, Price Level: €€)
+
+Which of these sounds most interesting, or are you looking for something with a specific price range or cuisine?
+

@@ -1,0 +1,4 @@
+I’d like a list of restaurants with both dine-in and takeout options in Boston.
+
+What type of cuisine are you in the mood for, and which area of Boston would you like to explore?
+

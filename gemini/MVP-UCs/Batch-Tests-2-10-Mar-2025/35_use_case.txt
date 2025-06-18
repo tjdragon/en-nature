@@ -1,0 +1,17 @@
+Find restaurants with digital reservation options in the downtown area of Charlotte.
+
+Okay, here are some restaurants in downtown Charlotte that offer digital reservations:
+
+*   **Fahrenheit:** Trendy American restaurant with panoramic rooftop views. (Rating: 4.2, Price Level: €€€)
+*   **Angeline's:** Italian restaurant with a cozy, upscale atmosphere. (Rating: 4.7, Price Level: €€)
+*   **The Capital Grille:** Upscale chophouse chain known for its steaks and wine list. (Rating: 4.7, Price Level: €€€)
+*   **Stoke Charlotte:** American restaurant in the Bank of America Corporate Center with Southern-style dishes. (Rating: 4.4, Price Level: €€€)
+*   **Deluxe Fun Dining:** Upscale, trendy spot serving seafood and comfort dishes with unique presentations. (Rating: 4.6, Price Level: €€€)
+*   **STK Steakhouse:** Modern steakhouse and lounge with high-energy vibes and a DJ. (Rating: 4.7, Price Level: €€€)
+*   **The Cellar at Duckworth's:** Gastropub fare in a speakeasy-style setting. (Rating: 4.6, Price Level: €€€)
+*   **Fin & Fino:** Social seafood house serving small plates and craft cocktails. (Rating: 4.6, Price Level: €€€)
+*   **The Lafayette:** Refined hotel restaurant with American dishes, cocktails, and piano music. (Rating: 4.5, Price Level: €€€)
+*   **Ink N Ivy:** Eclectic venue with comfort fare, craft cocktails, and live music. (Rating: 3.9, Price Level: €€)
+
+To narrow down the list, is there a specific type of cuisine or price range that you prefer?
+

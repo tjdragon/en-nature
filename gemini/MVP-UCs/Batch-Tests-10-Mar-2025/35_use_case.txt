@@ -1,0 +1,4 @@
+Find restaurants with digital reservation options in the downtown area of Charlotte.
+
+What type of cuisine are you interested in?
+

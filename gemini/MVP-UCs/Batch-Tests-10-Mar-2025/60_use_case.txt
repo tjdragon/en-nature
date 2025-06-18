@@ -1,0 +1,4 @@
+Show me places in Atlanta with robust reservation policies.
+
+What type of cuisine are you interested in, and in what area of Atlanta are you looking?
+

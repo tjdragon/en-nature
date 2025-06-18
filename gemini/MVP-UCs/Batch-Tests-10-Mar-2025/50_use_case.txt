@@ -1,0 +1,4 @@
+Find me a fine dining restaurant in New York with a reservation system.
+
+What type of cuisine are you interested in for your fine dining experience?
+

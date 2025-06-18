@@ -1,0 +1,14 @@
+Show me trendy coffee shops with lunch menus near my location.
+
+I found two trendy coffee shops with lunch menus near your location:
+
+*   **Telegraphe Cafe:** This cozy cafe features self-service espresso drinks, plus breakfast, soups, salads, and sandwiches.
+    *   Address: 107 W 18th St, New York, NY 10011, USA
+    *   Rating: 4.6 (500 reviews)
+
+*   **:3Coffee | Flatiron:** This cozy shop features coffee and tea, plus Colombian pastries such as empanadas, arepas, and pan de bono.
+    *   Address: 29 W 21st St, New York, NY 10010, USA
+    *   Rating: 4.5 (61 reviews)
+
+Would you like more details on either of these options?
+

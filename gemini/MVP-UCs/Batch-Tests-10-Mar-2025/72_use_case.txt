@@ -1,0 +1,4 @@
+Show me restaurants in Las Vegas with both indoor and outdoor seating.
+
+What type of cuisine are you interested in?
+

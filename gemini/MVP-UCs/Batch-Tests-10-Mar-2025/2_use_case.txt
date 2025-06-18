@@ -1,0 +1,25 @@
+Show restaurants in San Francisco that serve sushi and are within 2 miles of the Ferry Building.
+
+Okay, I've found several sushi restaurants near the Ferry Building in San Francisco. Here are some options:
+
+*   **Ozumo San Francisco:** This upscale Japanese restaurant offers sushi and robata-grilled dishes.
+    *   Rating: 4.4 stars
+*   **Delica:** A Japanese deli offering bento boxes and rice balls.
+    *   Rating: 4.2 stars
+*   **KUSAKABE:** This intimate restaurant offers a chef's choice tasting menu of Japanese cuisine.
+    *   Rating: 4.8 stars
+*   **Roka Akor - San Francisco:** This Japanese restaurant offers grilled meats and seafood, sushi, sake, and cocktails in a contemporary setting.
+    *   Rating: 4.6 stars
+*   **PABU Izakaya:** This spot serves robata-grilled meats, sushi, and other Japanese specialties in an upscale setting with a sake menu.
+    *   Rating: 4.4 stars
+*   **The Shota:** An upmarket, bar-style Japanese restaurant serving sushi and sake, plus a chef's choice omakase menu.
+    *   Rating: 4.8 stars
+*   **Ryoko's Japanese Restaurant & Bar:** Serves sushi rolls, sashimi, and other Japanese fare in a laid-back space with a DJ.
+    *   Rating: 4.4 stars
+*   **Wabi-Sabi SF at Soma:** A casual restaurant serving sushi and other Japanese fare in an intimate setting.
+    *   Rating: 4.7 stars
+*   **Sushi Chef:** A swanky modern restaurant specializing in sushi and ramen, as well as sake and beer.
+    *   Rating: 4.5 stars
+
+Would you like more details on any of these options?
+

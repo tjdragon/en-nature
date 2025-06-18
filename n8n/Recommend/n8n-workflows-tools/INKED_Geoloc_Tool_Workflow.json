@@ -1,0 +1,101 @@
+{
+  "name": "INKED_Geoloc_Tool_Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        260,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const query = $input.first().json.query;\nconst outputObject = {}; // Create an object, not an array\n\nconst parts = query.split(',');\nif (parts.length === 3) {\n  const user_id = parts[0].trim();\n  const latitude = parts[1].trim();\n  const longitude = parts[2].trim();\n\n  outputObject.user_id = user_id;\n  outputObject.latitude = latitude;\n  outputObject.longitude = longitude;\n} else {\n  console.error(\"Invalid query format:\", query);\n  // Handle error as needed\n  outputObject.error = \"Invalid query format\"; // Or another way to signal the error\n}\n\nreturn [{ json: outputObject }]; // Return the object directly"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        340
+      ],
+      "id": "975296fe-94ce-4251-bebc-524ee2da62d5",
+      "name": "Code",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH UserProfile AS (\n    -- Calculate user's spending profile (per cuisine) and overall average spend.\n    SELECT\n      ARRAY_AGG(\n          OBJECT_CONSTRUCT(\n            'Cuisine type', \"TYPE\",\n            'Minimum amount spent', \"MIN AMOUNT\",\n            'Maximum amount spent', \"MAX AMOUNT\",\n            'Standard deviation', \"STANDARD DEVIATION\",\n            'Average amount spent', \"AVERAGE AMOUNT\",\n            'Number of times the user went', \"NUMBER OF TIMES USER WENT TO BRAND TYPE\"\n          )\n      ) AS user_profile_array,  -- Return as an array of objects\n      user_average_spend\n    FROM\n      (\n        SELECT\n          bt.NAME AS \"TYPE\",\n          ROUND(MIN(ct.AMOUNT)) AS \"MIN AMOUNT\",\n          ROUND(MAX(ct.AMOUNT)) AS \"MAX AMOUNT\",\n          ROUND(STDDEV(ct.AMOUNT))::INTEGER AS \"STANDARD DEVIATION\",\n          ROUND(AVG(ct.AMOUNT)) AS \"AVERAGE AMOUNT\",\n          COUNT(*) AS \"NUMBER OF TIMES USER WENT TO BRAND TYPE\",\n          sub.user_average_spend\n        FROM\n          IK_PRODUCTION.CREDIT_TRANSACTIONS ct\n          JOIN IK_PRODUCTION.PROJECT_LOCATIONS pl ON ct.PROJECT_LOCATION_ID = pl.ID\n          JOIN IK_PRODUCTION.PROJECTS p ON pl.PROJECT_ID = p.ID\n          JOIN IK_PRODUCTION.BRANDS b ON p.BRAND_ID = b.ID\n          JOIN IK_PRODUCTION.BRAND_TAGS bt ON b.VENUE_STYLE = bt.ID\n          ,(SELECT ROUND(AVG(amount)) AS user_average_spend FROM IK_PRODUCTION.CREDIT_TRANSACTIONS WHERE USER_ID = {{ $json.user_id }}) sub\n        WHERE\n          ct.USER_ID = {{ $json.user_id }}\n        GROUP BY\n          bt.NAME, sub.user_average_spend\n      )\n    GROUP BY user_average_spend\n),\nLocationsNotVisitedByUser AS (\n    -- Find locations not visited by the user and within 800 meters.\n   SELECT\n        pl.ID AS LOCATION_ID,\n        pl.NAME AS LOCATION_NAME,\n        p.NAME AS PROJECT_NAME,\n        p.BRAND_ID AS BRAND_ID,\n        pl.LATITUDE,\n        pl.LONGITUDE,\n        ST_DISTANCE(\n            ST_MAKEPOINT({{ $json.longitude }}, {{ $json.latitude }}),\n            ST_MAKEPOINT(pl.LONGITUDE, pl.LATITUDE)\n        ) AS distance_meters,\n        bt.NAME as BRAND_TAG_NAME\n    FROM\n        IK_PRODUCTION.PROJECT_LOCATIONS pl\n    JOIN\n        IK_PRODUCTION.PROJECTS p ON pl.PROJECT_ID = p.ID\n    JOIN\n        IK_PRODUCTION.BRANDS b ON p.BRAND_ID = b.ID\n    JOIN\n        IK_PRODUCTION.BRAND_TAGS bt ON b.VENUE_STYLE = bt.ID\n    WHERE\n        pl.ID NOT IN (\n            SELECT DISTINCT\n                ct.PROJECT_LOCATION_ID\n            FROM\n                IK_PRODUCTION.CREDIT_TRANSACTIONS ct\n            WHERE\n                ct.USER_ID = {{ $json.user_id }}\n                AND ct.PROJECT_LOCATION_ID IS NOT NULL\n        )\n    AND ST_DISTANCE(\n        ST_MAKEPOINT({{ $json.longitude }}, {{ $json.latitude }}),\n        ST_MAKEPOINT(pl.LONGITUDE, pl.LATITUDE)\n    ) <= 800\n     AND pl.LATITUDE IS NOT NULL AND pl.LONGITUDE IS NOT NULL\n),\nRecommendations AS (\n    -- Calculate recommendations, filtering by average spend difference and distance.\n    SELECT\n        ARRAY_AGG(\n            OBJECT_CONSTRUCT(\n                'Restaurant', LOCATION_NAME,\n                'Cuisine type', BRAND_TAG_NAME,\n                'Minimum Spend', min_spend,\n                'Maximum Spend', max_spend,\n                'Standard Deviation', standard_deviation,\n                'Average Spend', average_spend,\n                'Distance (meters)', distance_meters\n            )\n        ) AS recommendations_array  -- Return as an array of objects\n\n    FROM\n    (\n      SELECT\n          lnvu.LOCATION_NAME,\n          lnvu.BRAND_TAG_NAME,\n          COALESCE(ROUND(MIN(ct.AMOUNT)), 0) as min_spend,\n          COALESCE(ROUND(MAX(ct.AMOUNT)), 0) as max_spend,\n          COALESCE(ROUND(STDDEV(ct.AMOUNT)), 0)::INTEGER as standard_deviation,\n          COALESCE(ROUND(AVG(ct.AMOUNT)), 0) as average_spend,\n          lnvu.distance_meters,\n        ABS(COALESCE(ROUND(AVG(ct.AMOUNT)), 0) - up.user_average_spend) AS diff_from_user_avg,\n        ROW_NUMBER() OVER (ORDER BY ABS(COALESCE(ROUND(AVG(ct.AMOUNT)), 0) - up.user_average_spend) ASC, lnvu.distance_meters ASC) AS rn\n      FROM\n        LocationsNotVisitedByUser lnvu\n      INNER JOIN\n        IK_PRODUCTION.CREDIT_TRANSACTIONS ct ON lnvu.LOCATION_ID = ct.PROJECT_LOCATION_ID\n      CROSS JOIN\n        UserProfile up\n      GROUP BY\n        lnvu.LOCATION_NAME,\n        lnvu.BRAND_TAG_NAME,\n        lnvu.distance_meters,\n        up.user_average_spend\n     QUALIFY rn <= 20\n    )\n)\n-- Final SELECT: Combine the results into a single JSON object.\nSELECT\n    OBJECT_CONSTRUCT(\n        'User id', {{ $json.user_id }},\n        'User profile', up.user_profile_array,\n        'User recommendation on the below list of restaurants', r.recommendations_array\n    ) AS data\nFROM UserProfile up, Recommendations r;"
+      },
+      "type": "n8n-nodes-base.snowflake",
+      "typeVersion": 1,
+      "position": [
+        800,
+        320
+      ],
+      "id": "3ed6f4ec-446a-42e2-80c2-e2b29620f3ee",
+      "name": "Snowflake1",
+      "credentials": {
+        "snowflake": {
+          "id": "0869j4Pe528cuhbe",
+          "name": "Snowflake account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "134839,40.7518074,-73.9917459"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Snowflake1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Snowflake1": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e7b99711-f4ad-4f82-ba4b-46882a4460dc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "089593b0375f52cffd2e682594e43cdd96459883230a04bef809490471c267bb"
+  },
+  "id": "cC7K6Fj2R8GYtcad",
+  "tags": []
+}

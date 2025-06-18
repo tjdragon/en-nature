@@ -1,0 +1,10 @@
+Show me popular dining options in Austin that emphasize organic ingredients.
+
+Here are some popular casual dining restaurants in Austin that emphasize locally sourced ingredients:
+
+*   **True Food Kitchen:** Chain eatery that emphasizes organic and vegetarian options. (Rating: 4.5, Price Level: €€)
+*   **Corinne Austin** Comfort food and patio seating (Rating 4.8, Price Level: €€)
+*   **Odd Duck:** Offers an innovative, farm-to-table menu (Rating: 4.7, Price Level: €€€)
+
+To refine the recommendations, are you interested in a particular cuisine or price range?
+

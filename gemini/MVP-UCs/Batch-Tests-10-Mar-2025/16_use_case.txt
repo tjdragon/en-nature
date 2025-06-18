@@ -1,0 +1,41 @@
+Show restaurants in Seattle that offer contactless delivery.
+
+I found several restaurants in Seattle that offer contactless delivery:
+
+*   **Rocco's:** Casual bar and pizza restaurant.
+    *   Rating: 4.5 stars
+*   **Zeeks Pizza:** Chain pizzeria with a casual atmosphere and gluten-free options.
+    *   Rating: 4.3 stars
+*   **Serious Pie Downtown:** Thin-crust pies.
+    *   Rating: 4.4 stars
+*   **Din Tai Fung:** Taiwanese steamed buns.
+    *   Rating: 4.5 stars
+*   **Post Alley Pizza:** By-the-slice NY-style pies and hoagies.
+    *   Rating: 4.5 stars
+*   **Snappy Dragon:** Casual Chinese restaurant offering a wide selection of gluten-free options.
+    *   Rating: 4.3 stars
+*   **Alibi Room:** Pies, mac and cheese, and calzones.
+    *   Rating: 4.6 stars
+*   **Fitchi House:** Pizza, calzones, and other baked goods featuring a halal menu.
+    *   Rating: 4.5 stars
+*   **Hot Mama's Pizza:** Dishing up pies and slices.
+    *   Rating: 4.4 stars
+*   **Pizzeria La Rocca:** Serves Italian dishes such as pizza, pasta, and salads.
+    *   Rating: 4.7 stars
+*   **World Pizza:** Serves by-the-slice pies and whole pies, plus beer and wine.
+    *   Rating: 4.6 stars
+*   **Numero Uno Pizza:** Serves Italian and Turkish pizzas, subs, salads, and wings.
+    *   Rating: 4.7 stars
+*   **Von's 1000 Spirits:** Offers American bites, a wide selection of spirits, and a wagering wheel.
+    *   Rating: 4.6 stars
+*   **Saffron Grill:** Serves Indian and Mediterranean cuisine.
+    *   Rating: 4.4 stars
+*   **Harried & Hungry:** Whipping up box lunches to order, including sandwiches, salads, and wraps.
+    *   Rating: 4.7 stars
+*   **HoneyHole Sandwiches:** Funky sandwich shop offering house-smoked meats, gluten-free bread, and vegetarian choices, plus a full bar.
+    *   Rating: 4.6 stars
+*   **Hurry Curry of Tokyo - South Lake Union:** Serves array of katsu curries and other Japanese comfort food, plus happy hour.
+    *   Rating: 4.1 stars
+
+Would you like more details on any of these options?
+
